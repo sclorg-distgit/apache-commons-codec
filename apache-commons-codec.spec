@@ -9,7 +9,7 @@
 
 Name:          %{?scl_prefix}apache-%{short_name}
 Version:       1.8
-Release:       6.3%{?dist}
+Release:       6.2%{?dist}
 Summary:       Implementations of common encoders and decoders
 License:       ASL 2.0
 URL:           http://commons.apache.org/%{base_name}/
@@ -22,13 +22,15 @@ Source1:       aspell-mail.txt
 
 BuildArch:     noarch
 
-BuildRequires: maven30-maven-local
-BuildRequires: maven30-apache-commons-parent >= 26-7
-BuildRequires: maven30-maven-antrun-plugin
-BuildRequires: maven30-maven-assembly-plugin
-BuildRequires: maven30-maven-resources-plugin
-BuildRequires: maven30-maven-doxia-sitetools
-BuildRequires: maven30-maven-plugin-bundle
+BuildRequires: java-devel
+BuildRequires: jpackage-utils
+BuildRequires: maven-local
+BuildRequires: apache-commons-parent >= 26-7
+BuildRequires: maven-antrun-plugin
+BuildRequires: maven-assembly-plugin
+BuildRequires: maven-resources-plugin
+BuildRequires: maven-doxia-sitetools
+BuildRequires: maven-plugin-bundle
 
 
 %description
@@ -43,7 +45,7 @@ Summary:       API documentation for %{name}
 %{summary}.
 
 %prep
-%{?scl:scl enable maven30 %{scl} - << "EOF"}
+%{?scl:scl enable %{scl} - << "EOF"}
 %setup -q -n %{short_name}-%{version}-src
 cp %{SOURCE1} aspell-mail.txt
 sed -i 's/\r//' RELEASE-NOTES*.txt LICENSE.txt NOTICE.txt
@@ -54,12 +56,12 @@ sed -i 's/\r//' RELEASE-NOTES*.txt LICENSE.txt NOTICE.txt
 %{?scl:EOF}
 
 %build
-%{?scl:scl enable maven30 %{scl} - << "EOF"}
+%{?scl:scl enable %{scl} - << "EOF"}
 %mvn_build
 %{?scl:EOF}
 
 %install
-%{?scl:scl enable maven30 %{scl} - << "EOF"}
+%{?scl:scl enable %{scl} - << "EOF"}
 %mvn_install
 %{?scl:EOF}
 %files -f .mfiles
@@ -69,9 +71,6 @@ sed -i 's/\r//' RELEASE-NOTES*.txt LICENSE.txt NOTICE.txt
 %doc LICENSE.txt NOTICE.txt aspell-mail.txt
 
 %changelog
-* Tue Jun 17 2014 Severin Gehwolf <sgehwolf@redhat.com> - 1.8-6.3
-- Build against maven30 collection.
-
 * Mon Jan 20 2014 Omair Maijd <omajid@redhat.com> - 1.8-6.2
 - Rebuild in order to fix osgi()-style provides.
 - Resolves: RHBZ#1054813
